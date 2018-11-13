@@ -10,8 +10,15 @@ public class Personnage implements Valeurs{
 	
 	
 	public BufferedImage img[][] = new BufferedImage[2][9];
+	public int indiceImgDepl;
+	
 	public int posX;
 	public int posY;
+	
+	public int longueur;
+	public int hauteur;
+	
+	public Map map;
 	
 	
 
@@ -22,6 +29,11 @@ public class Personnage implements Valeurs{
 		
 		this.posX = posX;
 		this.posY = posY;
+		this.indiceImgDepl = 0;
+		
+		this.longueur = img[1][indiceImgDepl].getWidth();
+		this.hauteur = img[1][indiceImgDepl].getHeight();
+		
 	}
 	
 	public void initDeplImg()
@@ -39,6 +51,70 @@ public class Personnage implements Valeurs{
 				}
 			}
 		}
+	}
+	
+	
+	public boolean isCollisionToBloc(Direction direction)
+	{
+		/*
+		 * On récup les 3 blocs a traiter
+		 * 1 bloc av. pos, le bloc actuel, le bloc suiv.
+		 */
+		int indiceBloc = 0;
+		for(Bloc bloc : map.listeBloc)
+		{
+			if(this.posX <= bloc.posX)
+			{
+				break;
+			}
+			indiceBloc++;
+		}
+		
+		
+		switch(direction)
+		{
+		case DOWN:
+			if(map.listeBloc.get(indiceBloc).posY > (this.posY + this.hauteur) )
+			{
+				/*
+				 * Le bloc est plus bas que le perso
+				 */
+				return false;
+			}
+			else if(map.listeBloc.get(indiceBloc).posY >= (this.posY + this.hauteur) )
+			{
+				return true;
+			}
+			break;
+		case INIT:
+			break;
+		case LEFT:
+			if(this.posX > 0)
+			{
+				/*
+				 * Le bloc est plus bas que le perso
+				 */
+				return false;
+			}
+			else if(this.posX == 0)
+			{
+				return true;
+			}
+			break;
+		case RIGHT:
+			break;
+		case UP:
+			break;
+		default:
+			break;
+		
+		}
+		return true;
+	}
+	
+	public void gravite()
+	{
+		
 	}
 
 }

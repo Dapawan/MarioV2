@@ -7,7 +7,7 @@ public interface Valeurs
 	
 	int longueurFenetre = 900;
 	int hauteurFenetre = 900;
-	
+		
 	
 	/*
 	 * Neurone
@@ -30,4 +30,15 @@ public interface Valeurs
 	//String img
 	String imgStr[] = { "depl_gauche_", "depl_droite_"};
 
+	
+	//Direction
+	enum Direction
+	{
+		INIT,
+		RIGHT,
+		LEFT,
+		UP,
+		DOWN
+	}
+	
 }
