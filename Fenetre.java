@@ -19,6 +19,9 @@ public class Fenetre extends JFrame implements Valeurs{
 	Fenetre fenetre = null;
 	
 	private ArrayList<Integer> touche_tapee = new ArrayList<>();
+	
+	public Partie partie;
+	
 	Personnage perso;
 	
 
@@ -39,13 +42,15 @@ public class Fenetre extends JFrame implements Valeurs{
 		
 		map.creationFlat();
 		
+		partie = new Partie(map);
+		
 		panel.setVisible(true);
 		panel.setFocusable(true);
 		
 		add(panel);
 		
-		
-		
+		//Retourne le perso a contrôler
+		perso = partie.ctrlUser();
 		
 		
 		this.addKeyListener(new KeyListener() {
@@ -99,7 +104,7 @@ public class Fenetre extends JFrame implements Valeurs{
 		
 	public void gestionDeplacementClavier()
 	{
-		if( (touche_tapee != null) && (map != null) )
+		if( (touche_tapee != null) && (map != null) && (perso != null))
 		{			
 			for(Integer touche : touche_tapee)
 			{
@@ -139,7 +144,7 @@ public class Fenetre extends JFrame implements Valeurs{
 			{
 				map.dessin(g);
 				
-				perso.draw(g);
+				partie.draw(g);
 				
 			}
 			

@@ -10,6 +10,38 @@ public interface Valeurs
 		
 	
 	/*
+	 * Nbr de joueur dans les équipes
+	 */
+	int nbrIAEquipeGauche = 1;
+	int nbrIAEquipeDroite = 1;
+	/*
+	 * Contrôle user
+	 * 0 : pas de contrôle
+	 * 1 : ctrl joueur gauche
+	 * 2 : ctrl joueur droite
+	 */
+	enum CtrlUser
+	{
+		Aucun,
+		JGauche,
+		JDroite
+	};
+	CtrlUser ctrlUser = CtrlUser.JDroite;
+	
+	/*
+	 * HitBox tête
+	 */
+	int hauteurXHitTete = 10;
+	
+	/*
+	 * Pos equipe gauche & equipe droite
+	 */
+	int posXGauche = 200;
+	int posXDroite = 700;
+	
+	
+	
+	/*
 	 * Neurone
 	 */
 	double biasMax = 5d;

@@ -9,15 +9,9 @@ public class Main {
 
 		fenetre = new Fenetre();
 		
-		Personnage perso_ = new Personnage(0,0,fenetre.map);
-		
-		perso = new Personnage(200, (fenetre.map.listeBloc.get(0).posY - perso_.hauteur) ,fenetre.map);
-		fenetre.perso = perso;
-
 		while(true)
 		{
-			perso.jump();
-			perso.gravite();
+			fenetre.partie.run();
 			
 			fenetre.gestionDeplacementClavier();
 
