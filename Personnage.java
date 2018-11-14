@@ -1,5 +1,6 @@
 package marioV2;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +11,9 @@ public class Personnage implements Valeurs{
 	
 	
 	public BufferedImage img[][] = new BufferedImage[2][9];
+	
+	
+	public BufferedImage imgInstant;
 	public int indiceImgDepl;
 	
 	public int posX;
@@ -18,21 +22,29 @@ public class Personnage implements Valeurs{
 	public int longueur;
 	public int hauteur;
 	
+	public boolean isJumping;
+	public int incrJump;
+	public int indiceIncrJump;
+	
 	public Map map;
 	
 	
 
-	public Personnage(int posX, int posY) 
+	public Personnage(int posX, int posY, Map map) 
 	{
+		this.map = map;
 		
 		initDeplImg();
 		
 		this.posX = posX;
 		this.posY = posY;
-		this.indiceImgDepl = 0;
+		this.indiceImgDepl = 1 * multiplicateurImgAnimMove;
+		this.isJumping = false;
+		this.incrJump = 1;
+		this.indiceIncrJump = 1;
 		
-		this.longueur = img[1][indiceImgDepl].getWidth();
-		this.hauteur = img[1][indiceImgDepl].getHeight();
+		this.longueur = img[1][1].getWidth();
+		this.hauteur = img[1][1].getHeight();
 		
 	}
 	
@@ -51,6 +63,8 @@ public class Personnage implements Valeurs{
 				}
 			}
 		}
+		
+		imgInstant = img[1][1];
 	}
 	
 	
@@ -69,7 +83,13 @@ public class Personnage implements Valeurs{
 			}
 			indiceBloc++;
 		}
-		
+		/*
+		 * limite à indice max
+		 */
+		if(indiceBloc >= map.listeBloc.size())
+		{
+			indiceBloc = map.listeBloc.size() - 1;
+		}
 		
 		switch(direction)
 		{
@@ -92,19 +112,33 @@ public class Personnage implements Valeurs{
 			if(this.posX > 0)
 			{
 				/*
-				 * Le bloc est plus bas que le perso
+				 * Le perso est dans le level
 				 */
 				return false;
 			}
-			else if(this.posX == 0)
+			else if(this.posX <= 0)
 			{
+				//Le perso est à la limite du niveau
 				return true;
 			}
 			break;
 		case RIGHT:
-			break;
+			if( (this.posX + this.longueur + OffsetLongueurPerso) < longueurFenetre)
+			{
+				/*
+				 * Le perso est dans le level
+				 */
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		case UP:
-			break;
+			/*
+			 * Pour le jump
+			 */
+			return false;
 		default:
 			break;
 		
@@ -114,7 +148,154 @@ public class Personnage implements Valeurs{
 	
 	public void gravite()
 	{
-		
+		if(isCollisionToBloc(Direction.DOWN) == false)
+		{
+			/*
+			 * On peut faire descendre le perso
+			 */
+			this.posY += graviteY;
+		}
 	}
 
+	public boolean move(Direction direction)
+	{
+		//gravite();
+		//jump();
+		
+		if(isCollisionToBloc(direction) == false)
+		{
+			switch(direction)
+			{
+			case DOWN:
+				this.posY += deplY;
+				this.isJumping = false;
+				break;
+			case INIT:
+				break;
+			case LEFT:
+				this.posX -= deplX;
+				break;
+			case RIGHT:
+				this.posX += deplX;
+				break;
+			case UP:
+				/*
+				 * On autorise le jump si le perso touche le sol
+				 */
+				if( (isCollisionToBloc(Direction.DOWN) == true) && (this.isJumping == false) )
+				{
+					resetJump();
+					this.isJumping = true;
+				}
+				break;
+			default:
+				break;
+			
+			}
+			
+			gestionAnimMove(direction);
+			
+			return true;
+		}
+		else
+		{
+			/*
+			 * Move impossible
+			 */
+			return false;
+		}
+	}
+	
+	public void jump()
+	{
+		if(isJumping == true)
+		{
+			/*
+			 * On lance le jump
+			 */
+			if(indiceIncrJump == 1)
+			{
+				/*
+				 * Départ du saut -> incr max
+				 */
+				incrJump = (longueurJumpX * longueurJumpX);
+			}
+			
+			
+			if(indiceIncrJump++ <= (longueurJumpX / 2))
+			{
+				/*
+				 * on décr
+				 */
+				int v_Temp = longueurJumpX - indiceIncrJump;
+				incrJump = (v_Temp * v_Temp);
+				this.posY -= (incrJump / diviseurJumpY);
+			}
+			else if(indiceIncrJump <= longueurJumpX)
+			{
+				/*
+				 * On incr
+				 */
+				int v_Temp = indiceIncrJump - (longueurJumpX / 2);
+				incrJump = (v_Temp * v_Temp);
+				this.posY += (incrJump / diviseurJumpY);
+			}
+			else
+			{
+				/*
+				 * Fin de saut
+				 */
+				resetJump();
+			}
+			
+			
+		}
+	}
+	
+	public void resetJump()
+	{
+		incrJump = 1;
+		indiceIncrJump = 1;
+		this.isJumping = false;
+	}
+
+	public void gestionAnimMove(Direction direction)
+	{
+		switch(direction)
+		{
+		case DOWN:
+			break;
+		case INIT:
+			break;
+		case LEFT:
+			if( (indiceImgDepl++) >= (9 * multiplicateurImgAnimMove) - 1)
+			{
+				indiceImgDepl = 1 * multiplicateurImgAnimMove;
+			}
+			imgInstant = img[0][ (indiceImgDepl / multiplicateurImgAnimMove) ];
+			break;
+		case RIGHT:
+			if( (indiceImgDepl++) >= (9 * multiplicateurImgAnimMove) - 1)
+			{
+				indiceImgDepl = 1 * multiplicateurImgAnimMove;
+			}
+			imgInstant = img[1][ (indiceImgDepl / multiplicateurImgAnimMove) ];
+			break;
+		case UP:
+			break;
+		default:
+			break;
+		
+		}
+		
+	}
+	
+	
+	public void draw(Graphics g)
+	{
+		if(imgInstant != null)
+		{
+			g.drawImage(imgInstant, this.posX, this.posY, null);
+		}
+	}
 }

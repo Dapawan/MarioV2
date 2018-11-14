@@ -28,7 +28,7 @@ public interface Valeurs
 	String pathImg = new File("").getAbsolutePath() + "\\src\\marioV2\\Img\\";
 	
 	//String img
-	String imgStr[] = { "depl_gauche_", "depl_droite_"};
+	String imgStr[] = { "perso_depl_gauche_", "perso_depl_droite_"};
 
 	
 	//Direction
@@ -40,5 +40,22 @@ public interface Valeurs
 		UP,
 		DOWN
 	}
+	
+	//Gravité
+	int graviteY = 1;
+	
+	//Move
+	int deplX = 3;
+	int deplY = 1;
+	//Jump
+	int longueurJumpX = 100;//100--> pour deplX = 1
+	int diviseurJumpY = 1300;//1300
+	//Multiplicateur imgAnimMove
+	int multiplicateurImgAnimMove = 10;
+	
+	//OffsetLongueurPerso
+	int OffsetLongueurPerso = 20;
+	
+	
 	
 }
