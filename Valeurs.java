@@ -26,7 +26,7 @@ public interface Valeurs
 		JGauche,
 		JDroite
 	};
-	CtrlUser ctrlUser = CtrlUser.JDroite;
+	CtrlUser ctrlUser = CtrlUser.JGauche;
 	
 	/*
 	 * HitBox tête

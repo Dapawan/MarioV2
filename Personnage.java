@@ -28,6 +28,8 @@ public class Personnage implements Valeurs{
 	
 	public Map map;
 	
+	public Personnage persoAdv;
+	
 	
 
 	public Personnage(int posX, int posY, Map map) 
@@ -162,7 +164,7 @@ public class Personnage implements Valeurs{
 		//gravite();
 		//jump();
 		
-		if(isCollisionToBloc(direction) == false)
+		if( (isCollisionToBloc(direction) == false) && (isCollisionPerso(direction) == false) )
 		{
 			switch(direction)
 			{
@@ -290,6 +292,47 @@ public class Personnage implements Valeurs{
 		
 	}
 	
+	
+	public boolean isCollisionPerso(Direction direction)
+	{
+		int newPosX = this.posX;
+		
+		switch(direction)
+		{
+		case DOWN:
+			break;
+		case INIT:
+			break;
+		case LEFT:
+			newPosX-=deplX;
+			break;
+		case RIGHT:
+			newPosX+=deplX;
+			break;
+		case UP:
+			break;
+		default:
+			break;
+		
+		}
+		if(persoAdv != null)
+		{
+			if( ((newPosX + this.longueur) >= persoAdv.posX) && ((newPosX + this.longueur) <= (persoAdv.posX + persoAdv.longueur) )
+					|| (newPosX >= persoAdv.posX) && (newPosX <= (persoAdv.posX + persoAdv.longueur)) )
+			{
+				/*
+				 * Même x
+				 */
+				if( (this.posY + this.hauteur) >= (persoAdv.posY - hauteurXHitTete) )
+				{
+					return true;
+				}
+			}
+					
+		}
+		
+		return false;
+	}
 	
 	public void draw(Graphics g)
 	{

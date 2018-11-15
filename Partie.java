@@ -9,11 +9,13 @@ public class Partie implements Valeurs{
 	ArrayList<Personnage> joueurEquipeDroite = new ArrayList<>();
 	
 	Map map;
+	Fenetre fenetre;
 	
 	
-	public Partie(Map map) 
+	public Partie(Map map, Fenetre fenetre) 
 	{
 		this.map = map;
+		this.fenetre = fenetre;
 		
 		initJoueur();
 		
@@ -35,6 +37,23 @@ public class Partie implements Valeurs{
 		{
 			joueurEquipeDroite.add(new Personnage(posXDroite, posY, map));
 		}
+		
+		/*
+		 * On donne les persos adv --> Détection de collision
+		 */
+		givePersoAdv();
+	}
+	
+	public void givePersoAdv()
+	{
+		/*
+		 * On donne les persos adv --> Détection de collision
+		 */
+		for(int i = 0; i < nbrIAEquipeGauche; i++)
+		{
+			joueurEquipeGauche.get(i).persoAdv = joueurEquipeDroite.get(i);
+			joueurEquipeDroite.get(i).persoAdv = joueurEquipeGauche.get(i);
+		}
 	}
 	
 	public Personnage ctrlUser()
@@ -52,6 +71,22 @@ public class Partie implements Valeurs{
 		
 		}
 		return null;
+	}
+	
+	public void ctrlUserVoid()
+	{
+		switch(ctrlUser)
+		{
+		case Aucun:
+			break;
+		case JDroite:
+			fenetre.perso = joueurEquipeDroite.get(0);
+		case JGauche:
+			fenetre.perso = joueurEquipeGauche.get(0);
+		default:
+			break;
+		
+		}
 	}
 	
 	public void draw(Graphics g)
@@ -102,10 +137,12 @@ public class Partie implements Valeurs{
 		if(resultHit == 1)
 		{
 			System.out.println("CONTACT J gauche!");
+			resetGame();
 		}
 		else if(resultHit == 2)
 		{
 			System.out.println("CONTACT J droite!");
+			resetGame();
 		}
 	}
 	
@@ -138,6 +175,39 @@ public class Partie implements Valeurs{
 			
 		}
 		return 0;
+	}
+	
+	
+	public void resetGame()
+	{
+		
+		/*
+		 * On suppr tout
+		 */
+		joueurEquipeGauche.removeAll(joueurEquipeGauche);
+		joueurEquipeDroite.removeAll(joueurEquipeDroite);
+		
+		Personnage perso_ = new Personnage(0, 0, map);
+		
+		int posY = map.listeBloc.get(0).posY - perso_.longueur - 50;
+		
+		for(int i = 0; i < nbrIAEquipeGauche; i++)
+		{
+			joueurEquipeGauche.add(new Personnage(posXGauche, posY, map));
+		}
+		
+		for(int i = 0; i < nbrIAEquipeDroite; i++)
+		{
+			joueurEquipeDroite.add(new Personnage(posXDroite, posY, map));
+		}
+		
+		//Renvoie le nouveau perso user (ctrl clavier)
+		ctrlUserVoid();
+		
+		/*
+		 * On donne les persos adv --> Détection de collision
+		 */
+		givePersoAdv();
 	}
 
 }

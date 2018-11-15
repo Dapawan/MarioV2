@@ -42,7 +42,7 @@ public class Fenetre extends JFrame implements Valeurs{
 		
 		map.creationFlat();
 		
-		partie = new Partie(map);
+		partie = new Partie(map,this);
 		
 		panel.setVisible(true);
 		panel.setFocusable(true);
