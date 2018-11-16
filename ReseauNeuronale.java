@@ -4,7 +4,21 @@ public class ReseauNeuronale implements Valeurs{
 
 	public Neurone[][] neuroneListe;
 	
+	int indexMaxNeurone;
+	
+	static int indexNeuroneMutation;
+	static boolean isIncrMutation;
+	
+	
+	
 	public ReseauNeuronale() {
+		
+		for(int i = 0; i < nbrNeuroneParCouche.length; i++)
+		{
+			indexMaxNeurone += nbrNeuroneParCouche[i];
+		}
+		
+		
 		/*
 		 * On crée le tableau des neurones avec la taille la plus grande nécessaire
 		 */
@@ -39,7 +53,46 @@ public class ReseauNeuronale implements Valeurs{
 		}
 	}
 	
-	
+	public void mutation()
+	{
+		
+		for(int couche = 0; couche < nbrNeuroneParCouche.length; couche++)	
+		{
+			/*
+			 * On parcourt toutes les couches
+			 */
+			for(int neurone = 0; neurone < nbrNeuroneParCouche[couche]; neurone++)
+			{
+				/*
+				 * On parcourt toutes les neurones
+				 */
+				
+				
+				/*
+				 * A pARCOOURIR TOUS LES BIAS &WEIGHT
+				 */
+				
+			}
+			
+		}
+		
+		
+		//Gestion index et incr
+		if(isIncrMutation == true)
+		{
+			
+			if(indexNeuroneMutation++ < indexMaxNeurone)
+			{
+				//Reset
+				indexNeuroneMutation = 0;
+			}
+			isIncrMutation = false;
+		}
+		else
+		{
+			isIncrMutation = true;
+		}
+	}
 	
 	public double[] result(double entree[])
 	{

@@ -5,7 +5,7 @@ public class Main {
 	private static Fenetre fenetre;
 	private static Personnage perso;
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws CloneNotSupportedException{
 
 		fenetre = new Fenetre();
 		

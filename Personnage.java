@@ -29,6 +29,7 @@ public class Personnage implements Valeurs{
 	public Map map;
 	
 	public Personnage persoAdv;
+	public int score;
 	
 	
 
@@ -70,6 +71,19 @@ public class Personnage implements Valeurs{
 	}
 	
 	
+	public void refreshScore()
+	{
+		/*
+		 * La proximitée entre les pieds du joueur et la tête de son adv
+		 * 
+		 */
+		int result = 0;
+		
+		result = scoreBase - ( Math.abs(this.posX - persoAdv.posX));// + Math.abs((this.posY + this.hauteur) - (persoAdv.posY + hauteurXHitTete)) );
+		
+		this.score = result;
+	}
+	
 	public boolean isCollisionToBloc(Direction direction)
 	{
 		/*
@@ -107,8 +121,6 @@ public class Personnage implements Valeurs{
 			{
 				return true;
 			}
-			break;
-		case INIT:
 			break;
 		case LEFT:
 			if(this.posX > 0)
@@ -164,6 +176,8 @@ public class Personnage implements Valeurs{
 		//gravite();
 		//jump();
 		
+		refreshScore();
+		
 		if( (isCollisionToBloc(direction) == false) && (isCollisionPerso(direction) == false) )
 		{
 			switch(direction)
@@ -171,8 +185,6 @@ public class Personnage implements Valeurs{
 			case DOWN:
 				this.posY += deplY;
 				this.isJumping = false;
-				break;
-			case INIT:
 				break;
 			case LEFT:
 				this.posX -= deplX;
@@ -267,8 +279,6 @@ public class Personnage implements Valeurs{
 		{
 		case DOWN:
 			break;
-		case INIT:
-			break;
 		case LEFT:
 			if( (indiceImgDepl++) >= (9 * multiplicateurImgAnimMove) - 1)
 			{
@@ -301,8 +311,6 @@ public class Personnage implements Valeurs{
 		{
 		case DOWN:
 			break;
-		case INIT:
-			break;
 		case LEFT:
 			newPosX-=deplX;
 			break;
@@ -317,8 +325,8 @@ public class Personnage implements Valeurs{
 		}
 		if(persoAdv != null)
 		{
-			if( ((newPosX + this.longueur) >= persoAdv.posX) && ((newPosX + this.longueur) <= (persoAdv.posX + persoAdv.longueur) )
-					|| (newPosX >= persoAdv.posX) && (newPosX <= (persoAdv.posX + persoAdv.longueur)) )
+			if( (((newPosX + this.longueur) >= persoAdv.posX) && ((newPosX + this.longueur) <= (persoAdv.posX + persoAdv.longueur) ))
+					|| ((newPosX >= persoAdv.posX) && (newPosX <= (persoAdv.posX + persoAdv.longueur))) )
 			{
 				/*
 				 * Même x

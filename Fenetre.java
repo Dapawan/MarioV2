@@ -22,7 +22,7 @@ public class Fenetre extends JFrame implements Valeurs{
 	
 	public Partie partie;
 	
-	Personnage perso;
+	public volatile Personnage perso;
 	
 
 	public Fenetre() {

@@ -8,6 +8,11 @@ public interface Valeurs
 	int longueurFenetre = 900;
 	int hauteurFenetre = 900;
 		
+	/*
+	 * TimeOut IA
+	 */
+	long TimeOutIA = 2000;
+	
 	
 	/*
 	 * Nbr de joueur dans les équipes
@@ -26,7 +31,7 @@ public interface Valeurs
 		JGauche,
 		JDroite
 	};
-	CtrlUser ctrlUser = CtrlUser.JGauche;
+	CtrlUser ctrlUser = CtrlUser.Aucun;
 	
 	/*
 	 * HitBox tête
@@ -38,8 +43,27 @@ public interface Valeurs
 	 */
 	int posXGauche = 200;
 	int posXDroite = 700;
+	/*
+	 * Print score
+	 */
+	int posXJGscore = posXGauche;
+	int posXJDscore = posXDroite;
+	int posYScore = 20;
+	/*
+	 * Print Chrono
+	 */
+	int posXJGchrono = posXJGscore;
+	int posXJDchrono = posXJDscore;
+	int posYChrono = posYScore + 20;
+	/*
+	 * Nbr de resultat d'ia gardé en mémoire
+	 */
+	int nbrIAResult = 5;
 	
-	
+	/*
+	 * Seuil d'activation neurone
+	 */
+	double seuilActivationNeurone = 0.75d;
 	
 	/*
 	 * Neurone
@@ -50,7 +74,7 @@ public interface Valeurs
 	 * Reseau neuronale
 	 */
 	char nbrEntree = 4;
-	char[] nbrNeuroneParCouche = {4,2,4};
+	char[] nbrNeuroneParCouche = {4,3,3,3,4};//{4,2,4};
 	
 	
 	
@@ -66,7 +90,6 @@ public interface Valeurs
 	//Direction
 	enum Direction
 	{
-		INIT,
 		RIGHT,
 		LEFT,
 		UP,
@@ -75,7 +98,9 @@ public interface Valeurs
 	
 	//Gravité
 	int graviteY = 1;
-	
+	//Score départ
+	int scoreBase = 0;
+	int scoreMAX = 10;
 	//Move
 	int deplX = 3;
 	int deplY = 1;
